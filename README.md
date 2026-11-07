@@ -6,8 +6,8 @@ A responsive web dashboard that shows live weather and air quality for any city.
 
 ## Features :-
 
-City search with loading state and clear error messages (city not found, invalid API key, network failure)
-Current weather: temperature, weather description and icon, feels like, humidity, wind speed, sunrise and sunset, local time of the searched city
+.City search with loading state and clear error messages (city not found, invalid API key, network failure)
+.Current weather: temperature, weather description and icon, feels like, humidity, wind speed, sunrise and sunset, local time of the searched city
 Air Quality Index on a 5-level scale (Good to Very Poor) with a colour gauge
 Six pollutant readings: PM2.5, PM10, NO₂, O₃, SO₂, CO (µg/m³)
 Weather-reactive background with day and night variants
