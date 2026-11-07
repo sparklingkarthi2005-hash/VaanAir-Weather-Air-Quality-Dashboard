@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaanAir : Weather & Air Quality Dashboard</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-white">
+
+    <!-- Animated background scene (changes with weather + day/night) -->
+    <div id="scene" data-scene="clear-night" aria-hidden="true">
+        <div class="scene-gradient"></div>
+        <div class="scene-image"></div>
+        <div class="sun"></div>
+        <div class="moon"></div>
+        <canvas id="fx"></canvas>
+        <div class="flash"></div>
+        <div class="scene-shade"></div>
+    </div>
+
+    <main class="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <section class="glass w-full max-w-xl p-6 md:p-8">
+
+            <h1 class="text-xl md:text-2xl font-semibold tracking-tight mb-5">Weather & Air Quality</h1>
+
+            <!-- Search -->
+            <form id="searchForm" class="search mb-6" autocomplete="off">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+                </svg>
+                <input type="text" id="cityInput" placeholder="Search a city, e.g. Chennai" aria-label="City name"
+                    class="flex-1 bg-transparent px-2 py-3 text-white placeholder-white/50 focus:outline-none">
+                <button id="searchBtn" type="submit" class="search-btn">
+                    <span class="btn-label">Search</span>
+                    <span class="spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <!-- Empty state -->
+            <p id="emptyMsg" class="text-white/70 text-sm py-10 text-center">
+                Enter a city to see live weather and air quality.
+            </p>
+
+            <!-- Error -->
+            <div id="errorMsg" role="alert" class="hidden error-box"></div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="hidden">
+
+                <!-- Header: city + temperature -->
+                <div class="reveal flex items-start justify-between gap-4" style="--i:0">
+                    <div class="min-w-0">
+                        <h2 id="cityName" class="text-3xl md:text-4xl font-bold tracking-tight truncate"></h2>
+                        <p class="text-white/70 text-sm mt-1">
+                            <span id="countryName"></span>
+                            <span class="mx-1 text-white/40">/</span>
+                            <span id="localTime"></span>
+                        </p>
+                    </div>
+                    <img id="weatherIcon" src="" alt="Weather icon" class="w-16 h-16 -mt-2 -mr-2 drop-shadow-lg">
+                </div>
+
+                <div class="reveal mt-2 flex items-end gap-4" style="--i:1">
+                    <h3 id="temp" class="temp-big">--°</h3>
+                    <p id="weatherDesc" class="capitalize text-white/80 text-lg pb-3">--</p>
+                </div>
+
+                <!-- Metrics -->
+                <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4" style="--i:2">
+                    <div class="metric"><span>Feels like</span><strong id="feelsLike">--</strong></div>
+                    <div class="metric"><span>Humidity</span><strong id="humidity">--</strong></div>
+                    <div class="metric"><span>Wind</span><strong id="windSpeed">--</strong></div>
+                    <div class="metric"><span>Sunrise / Sunset</span><strong id="sunTimes" class="text-sm">--</strong></div>
+                </div>
+
+                <!-- Air quality -->
+                <div class="reveal aqi-card mt-4" style="--i:3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-white/70 text-sm font-medium">Air Quality Index</span>
+                        <span id="aqiBadge" class="px-3 py-1 rounded-full text-xs font-semibold">--</span>
+                    </div>
+
+                    <div class="aqi-track mt-4" role="img" aria-label="Air quality scale from good to very poor">
+                        <div class="aqi-marker" id="aqiMarker"></div>
+                    </div>
+                    <div class="flex justify-between text-[11px] text-white/50 mt-1.5">
+                        <span>Good</span><span>Very poor</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-white/10 text-center">
+                        <div><p class="pol-label">PM2.5</p><p id="pm25" class="pol-val">--</p></div>
+                        <div><p class="pol-label">PM10</p><p id="pm10" class="pol-val">--</p></div>
+                        <div><p class="pol-label">NO₂</p><p id="no2" class="pol-val">--</p></div>
+                        <div><p class="pol-label">O₃</p><p id="o3" class="pol-val">--</p></div>
+                        <div><p class="pol-label">SO₂</p><p id="so2" class="pol-val">--</p></div>
+                        <div><p class="pol-label">CO</p><p id="co" class="pol-val">--</p></div>
+                    </div>
+                    <p class="text-[11px] text-white/45 mt-3 text-center">Pollutant levels in µg/m³</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
